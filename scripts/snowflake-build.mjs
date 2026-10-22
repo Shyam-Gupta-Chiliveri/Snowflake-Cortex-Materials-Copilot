@@ -52,8 +52,12 @@ for (const f of files) {
     }
   }
   console.log(`SQL ${f}`)
+  const optional = /04_ai|05_search|06_ml/.test(f)
   for (const stmt of statements(fs.readFileSync(path.join(SQL_DIR, f), 'utf8'))) {
-    try { await exec(conn, stmt) } catch (e) { console.error(stmt.slice(0, 120)); throw e }
+    try { await exec(conn, stmt) } catch (e) {
+      if (optional) { console.warn(`Skipping (trial Cortex/ML may be unavailable): ${String(e.message).slice(0, 180)}`); continue }
+      console.error(stmt.slice(0, 120)); throw e
+    }
   }
 }
 
@@ -65,6 +69,26 @@ for (const file of fs.readdirSync(knowledge).filter((f) => f.endsWith('.md'))) {
     WHEN NOT MATCHED THEN INSERT (DOC_ID, TITLE, CATEGORY, BODY, LOADED_AT) VALUES (s.DOC_ID, s.TITLE, s.CATEGORY, s.BODY, CURRENT_TIMESTAMP())`,
   [doc.id, doc.title, doc.category, doc.body])
   console.log(`document ${doc.id}`)
+}
+
+const ncrCount = await exec(conn, 'SELECT COUNT(*) AS N FROM CURATED.NCR_ENRICHED')
+if (!Number(ncrCount[0]?.N)) {
+  console.warn('NCR_ENRICHED empty (Cortex classify/summarize skipped). Seeding keyword fallback…')
+  await exec(conn, `INSERT INTO CURATED.NCR_ENRICHED
+    (NCR_ID, OPENED_ON, ROUTE_KEY, PART, STATUS, DESCRIPTION, CATEGORY, SEVERITY, SUMMARY, ENRICHED_BY, ENRICHED_AT)
+    SELECT NCR_ID, OPENED_ON, ROUTE_KEY, PART, STATUS, DESCRIPTION,
+      CASE
+        WHEN DESCRIPTION ILIKE '%die-cast%' OR DESCRIPTION ILIKE '%overmould%' THEN 'Die-casting or assembly'
+        WHEN DESCRIPTION ILIKE '%sulph%' OR DESCRIPTION ILIKE '%inclusion%' THEN 'Material chemistry'
+        WHEN DESCRIPTION ILIKE '%indent%' OR DESCRIPTION ILIKE '%fixture%' OR DESCRIPTION ILIKE '%LIMS%' THEN 'Testing or measurement'
+        WHEN DESCRIPTION ILIKE '%diameter%' OR DESCRIPTION ILIKE '%machin%' THEN 'Geometry or machining'
+        ELSE 'Heat treatment'
+      END,
+      CASE WHEN DESCRIPTION ILIKE '%customer%' OR DESCRIPTION ILIKE '%return%' THEN 'Critical'
+           WHEN STATUS = 'Open' THEN 'Major' ELSE 'Minor' END,
+      SPLIT_PART(DESCRIPTION, '. ', 1),
+      'local keyword rules (Cortex unavailable)', CURRENT_TIMESTAMP()
+    FROM RAW.NCR_RAW`)
 }
 
 conn.destroy((e) => { if (e) throw e })

@@ -90,6 +90,15 @@ export async function createSnowflake(cfg) {
     ncrs: () => cached('ncrs', 5 * 60_000, async () => rowsToCamel(await q('SELECT * FROM CURATED.NCR_ENRICHED ORDER BY OPENED_ON')).map((n) => ({
       ...n, openedOn: n.openedOn instanceof Date ? n.openedOn.toISOString().slice(0, 10) : String(n.openedOn).slice(0, 10),
     }))),
+    anomalies: () => cached('anomalies', 5 * 60_000, async () => {
+      try {
+        return rowsToCamel(await q('SELECT * FROM MART.ANOMALIES'))
+      } catch {
+        const { deriveAnomalies } = await import('./anomalies.js')
+        const [routes, ncrs, sem] = await Promise.all([api.routes(), api.ncrs(), api.sem()])
+        return deriveAnomalies({ routes, ncrs, sem })
+      }
+    }),
     documents: async () => [],
     search: async (query, k = 5) => {
       let results

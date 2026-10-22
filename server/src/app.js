@@ -12,6 +12,13 @@ export async function createApp(cfg = loadConfig()) {
   const app = express()
   app.disable('x-powered-by')
   app.use(express.json({ limit: '64kb' }))
+  app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
+    if (req.method === 'OPTIONS') return res.sendStatus(204)
+    next()
+  })
 
   const wrap = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
@@ -39,9 +46,14 @@ export async function createApp(cfg = loadConfig()) {
 
   app.get('/kpis', wrap(async (_req, res) => res.json(await kpis(repo))))
   app.get('/groups', wrap(async (_req, res) => res.json(await groups(repo))))
+  app.get('/lots', wrap(async (_req, res) => res.json(await groups(repo))))
   app.get('/anomalies', wrap(async (_req, res) => res.json(await anomalies(repo))))
   app.get('/sem', wrap(async (_req, res) => res.json(await repo.sem())))
+  app.get('/ncrs', wrap(async (_req, res) => res.json(await repo.ncrs())))
+  app.get('/factors', wrap(async (_req, res) => res.json(await repo.factors())))
   app.get('/pipeline', wrap(async (_req, res) => res.json({ objects: await repo.pipeline(), reason })))
+  app.get('/ml', wrap(async (_req, res) => res.json((await repo.ml()) || { status: 'Target', note: 'Train with npm run snowflake:build after ACCOUNTADMIN setup' })))
+  app.get('/documents', wrap(async (_req, res) => res.json(await repo.documents())))
 
   app.get('/servicenow', wrap(async (req, res) => {
     const preview = await previewIncident(repo, req.query.ncr)

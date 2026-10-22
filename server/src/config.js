@@ -21,7 +21,9 @@ if (fs.existsSync(envFile)) {
 function privateKey() {
   if (process.env.SNOWFLAKE_PRIVATE_KEY) return process.env.SNOWFLAKE_PRIVATE_KEY.replace(/\\n/g, '\n')
   const p = process.env.SNOWFLAKE_PRIVATE_KEY_PATH
-  return p && fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : null
+  if (!p) return null
+  const abs = path.isAbsolute(p) ? p : path.resolve(ROOT, p)
+  return fs.existsSync(abs) ? fs.readFileSync(abs, 'utf8') : null
 }
 
 export function loadConfig(env = process.env) {

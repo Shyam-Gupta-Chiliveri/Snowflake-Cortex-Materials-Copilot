@@ -82,27 +82,6 @@ export default function Chat() {
 
   return (
     <div className="grid g-copilot">
-      <div className="stack">
-        <div className="card">
-          <div className="hd">What the copilot can see</div>
-          <ul className="list">
-            <li>{kpis ? `${kpis.tests.toLocaleString()} axle tests across ${kpis.routeCount} heat-treatment routes.` : 'Route quality, SEM and NCRs from the local mirror or Snowflake MART.'}</li>
-            <li>Release gate from WI-HT-4CR13 §5: 30 % ductility, 600 HV10, &lt;5 % of tests below 23 %.</li>
-            <li>SEM U-Net ductile vs cleavage area, linked to routes by file name.</li>
-            <li>8D NCRs. Open ones can be previewed as a ServiceNow incident.</li>
-            <li>Cortex {health?.cortex === 'mocked' ? 'is mocked locally' : `model ${health?.cortex || '…'}`}; the critic still checks every number.</li>
-          </ul>
-        </div>
-        <div className="card">
-          <div className="hd">Try these</div>
-          <div className="bd" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {SUGGESTIONS.map((s) => (
-              <button key={s} className="btn ghost" type="button" onClick={() => ask(s)}>{s}</button>
-            ))}
-          </div>
-        </div>
-      </div>
-
       <div className="joule">
         <div className="jhead">
           <div className="t"><span className="spark">✦</span> Cortex materials copilot</div>
@@ -127,6 +106,27 @@ export default function Chat() {
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Ask about V14, V6-F, SEM, NCR-2026-012…" maxLength={2000} />
           <button className="btn" type="submit" disabled={busy}>Ask</button>
         </form>
+      </div>
+
+      <div className="stack">
+        <div className="card">
+          <div className="hd">What the copilot can see</div>
+          <ul className="list">
+            <li>{kpis ? `${kpis.tests.toLocaleString()} axle tests across ${kpis.routeCount} heat-treatment routes.` : 'Route quality, SEM and NCRs from the local mirror or Snowflake MART.'}</li>
+            <li>Release gate from WI-HT-4CR13 §5: 30 % ductility, 600 HV10, &lt;5 % of tests below 23 %.</li>
+            <li>SEM U-Net ductile vs cleavage area, linked to routes by file name.</li>
+            <li>8D NCRs. Open ones can be previewed as a ServiceNow incident.</li>
+            <li>Cortex {health?.cortex === 'mocked' ? 'is mocked locally' : `model ${health?.cortex || '…'}`}; the critic still checks every number.</li>
+          </ul>
+        </div>
+        <div className="card">
+          <div className="hd">Try these</div>
+          <div className="bd" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {SUGGESTIONS.map((s) => (
+              <button key={s} className="btn ghost" type="button" onClick={() => ask(s)}>{s}</button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

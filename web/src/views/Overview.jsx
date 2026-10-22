@@ -50,6 +50,8 @@ export default function Overview() {
           <a className="btn" href="#/chat">Ask the copilot</a>
           <a className="btn ghost" href="#/groups">Compare groups</a>
           <a className="btn ghost" href="#/sem">Open SEM</a>
+          <span className="chip artifact">Artifact · local mirror</span>
+          <span className="chip target">Target · live Cortex</span>
         </div>
       </div>
 
@@ -131,7 +133,16 @@ export default function Overview() {
         </div>
       ) : null}
 
-      <p className="footer">Demo release limits in WI-HT-4CR13 §5 are project criteria, not a standard. NCR texts are illustrative. The 67 MB axle CSV is not in git.</p>
+      <div className="card" style={{ marginTop: 16 }}>
+        <div className="hd">Related live apps <span className="muted">same 4Cr13 story, not merged here</span></div>
+        <div className="caps">
+          <div className="cap"><div className="t">Agentic AI <span className="chip live">Live</span></div><p><a href="https://138.2.179.154.sslip.io" target="_blank" rel="noreferrer">138.2.179.154.sslip.io</a> — multi-agent materials assistant.</p></div>
+          <div className="cap"><div className="t">SEM classifier <span className="chip live">Live</span></div><p><a href="https://sem.138.2.179.154.sslip.io" target="_blank" rel="noreferrer">sem.138.2.179.154.sslip.io</a> — U-Net ductile / brittle maps.</p></div>
+          <div className="cap"><div className="t">RAG <span className="chip live">Live</span></div><p><a href="https://rag.138.2.179.154.sslip.io" target="_blank" rel="noreferrer">rag.138.2.179.154.sslip.io</a> — standards / thesis retrieval.</p></div>
+          <div className="cap"><div className="t">SAP workbench <span className="chip live">Live</span></div><p><a href="https://quality.138.2.179.154.sslip.io" target="_blank" rel="noreferrer">quality.138.2.179.154.sslip.io</a> — CAP + Gen AI Hub quality copilot.</p></div>
+        </div>
+      </div>
+      <p className="footer">Demo release limits in WI-HT-4CR13 §5 are project criteria, not a standard. NCR texts are illustrative. The 67 MB axle CSV is not in git. VM deploy of this copilot is Target and needs approval.</p>
     </>
   )
 }

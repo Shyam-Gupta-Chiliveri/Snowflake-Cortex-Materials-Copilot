@@ -7,6 +7,7 @@ import path from 'node:path'
 import { ROOT } from '../config.js'
 import { LINEAGE } from './lineage.js'
 import { Retriever, parseDoc } from '../agent/retriever.js'
+import { deriveAnomalies } from './anomalies.js'
 
 export function readCsv(file) {
   const text = fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, '')
@@ -72,6 +73,7 @@ export function createMirror() {
     dataQuality: async () => products.dataQuality,
     sem: async () => products.sem,
     ncrs: async () => ncrs,
+    anomalies: async () => products.anomalies || deriveAnomalies({ routes: products.routes, ncrs, sem: products.sem }),
     documents: async () => docs.map(({ id, title, category }) => ({ id, title, category })),
     search: async (query, k = 5) => retriever.search(query, k),
     complete: async () => null,

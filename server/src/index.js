@@ -1,16 +1,18 @@
+import { fileURLToPath } from 'node:url'
 import { loadConfig } from './config.js'
 import { createApp } from './app.js'
 
-const cfg = loadConfig()
-const app = await createApp(cfg)
-const server = app.listen(cfg.port, () => {
-  console.log(`Materials copilot on http://127.0.0.1:${cfg.port} (${app.locals.reason || 'Snowflake'})`)
-})
-
-const shutdown = async () => {
-  server.close()
-  await app.locals.repo.close().catch(() => {})
-  process.exit(0)
+export async function start(env = process.env) {
+  const cfg = loadConfig(env)
+  const app = await createApp(cfg)
+  const server = await new Promise((resolve) => {
+    const s = app.listen(cfg.port, '0.0.0.0', () => resolve(s))
+  })
+  const info = await app.locals.repo.info()
+  console.log(`materials copilot on :${cfg.port} (${info.mode}${app.locals.reason ? `; ${app.locals.reason}` : ''})`)
+  return { server, repo: app.locals.repo, app }
 }
-process.on('SIGINT', shutdown)
-process.on('SIGTERM', shutdown)
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  start().catch((e) => { console.error(e); process.exit(1) })
+}

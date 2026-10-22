@@ -20,3 +20,4 @@ data/*.csv
 !data/ncr_events.csv
 *.gz
 .snowflake/
+snowflake/account_setup.sql

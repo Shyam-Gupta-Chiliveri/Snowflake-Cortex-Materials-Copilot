@@ -41,7 +41,7 @@ export function compose({ routed, routes = [], ncrs = [], sem, tempering, factor
     return lines.join('\n')
   }
 
-  if (routed.primary === 'best') {
+  if (routed.primary === 'best' && picked.length !== 1) {
     const top = ranked[0]
     lines.push(`**${top.route.routeKey} is the top ranked route under ${RULE_REF}.**`)
     for (const { route: r, gate } of ranked.slice(0, 5)) {

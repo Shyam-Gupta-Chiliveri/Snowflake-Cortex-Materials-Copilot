@@ -36,6 +36,19 @@ When Snowflake is disconnected the API serves `data/mirror/products.json` and **
 | UI | React 18 + Vite |
 | Local | Mirror built with the same parse rules as the SQL (`scripts/lib/parse.mjs`) |
 
+## Status (honest)
+
+| Piece | Label | Notes |
+| --- | --- | --- |
+| Local workbench + API + tests | **Artifact** | Runs now on the committed mirror of 385k tests / 1999 SEM images |
+| Snowflake SQL pipeline | **Artifact** | Ready to run after ACCOUNTADMIN setup |
+| Cortex Search / COMPLETE / CLASSIFY | **Target** | Live after `snowflake:build`; trial regions may need `CORTEX_ENABLED_CROSS_REGION` |
+| Snowflake ML classification | **Target** | Trained in-warehouse; skipped gracefully if the trial cannot run it |
+| Snowflake ML forecast / anomaly detection | **Target** | Source CSVs have no time index; rule-based `MART.ANOMALIES` is the live product |
+| ServiceNow | **Artifact** | Stub incident payload unless `SERVICENOW_*` is set |
+| VM deploy | **Target** | Docker Compose is local-only; VM needs explicit approval |
+| Related Streamlit apps | **Live** | Not merged: [Agentic](https://138.2.179.154.sslip.io), [SEM](https://sem.138.2.179.154.sslip.io), [RAG](https://rag.138.2.179.154.sslip.io), [SAP](https://quality.138.2.179.154.sslip.io) |
+
 ## Honest limits
 
 - Release criteria in WI-HT-4CR13 §5 (30 % ductility, 600 HV10, &lt;5 % low-ductility share) are **demo limits**, not a standard.
@@ -43,7 +56,8 @@ When Snowflake is disconnected the API serves `data/mirror/products.json` and **
 - SEM U-Net scores come from the DSML project; this repo does not retrain the network.
 - Cortex is **mocked** until the Snowsight setup and `npm run snowflake:build` have run.
 - ServiceNow is a **stub** unless `SERVICENOW_*` is set.
-- The 67 MB axle CSV is **not in git**. Load it after you run the ACCOUNTADMIN SQL.
+- The 67 MB axle CSV is **not in git**. Load it from the local DSML path after you run the ACCOUNTADMIN SQL.
+- Knowledge docs are original procedure summaries that name ISO 6507-1 / Vickers HV10; they do not copy standard text.
 
 ## Local run (no Snowflake)
 
@@ -75,7 +89,7 @@ Default paths: `../DSML_Final_Project/data/axle_test_385000_samples.csv` and `..
 1. `npm run snowflake:keys` writes `keys/*_private.pem` (gitignored) and fills `snowflake/account_setup.sql`.
 2. Paste **`snowflake/account_setup.sql`** into a Snowsight worksheet as **ACCOUNTADMIN** and run it. Reply **done** when it finishes.
 3. Copy `.env.example` → `.env` (account is already `ovllhya-hp33530`).
-4. `npm run snowflake:build` PUTs the CSVs and runs `snowflake/sql/01_raw.sql` … `07_app_grants.sql`.
+4. `npm run snowflake:build` PUTs the CSVs and runs `snowflake/sql/01_raw.sql` … `08_app.sql`. Cortex / ML steps are skipped with a warning if the trial cannot run them.
 5. `npm run snowflake:verify` then `npm start` — `/health` should switch to `"mode": "snowflake"`.
 
 Never paste a private key into chat, git, or Snowsight. Only the public key goes into `RSA_PUBLIC_KEY`.
@@ -87,7 +101,9 @@ Never paste a private key into chat, git, or Snowsight. Only the public key goes
 | GET | `/health` | Mirror vs Snowflake, Cortex mocked or live |
 | POST | `/ask` | Copilot (`{ "question": "Can we release V6-F?" }`) |
 | GET | `/kpis` | Tests, recommended route, open NCRs |
-| GET | `/groups` | Routes with the release gate |
+| GET | `/groups` or `/lots` | Routes with the release gate |
 | GET | `/anomalies` | Open NCRs and failing routes |
 | GET | `/sem` | U-Net ductile / brittle by route |
+| GET | `/pipeline` | Lineage of RAW → CURATED → MART → Cortex |
 | POST | `/servicenow` | Incident stub (`{ "ncrId": "NCR-2026-012" }`) |
+| GET | `/servicenow?ncr=` | Preview the same payload |

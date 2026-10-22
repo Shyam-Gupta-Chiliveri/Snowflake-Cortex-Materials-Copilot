@@ -18,6 +18,8 @@ export const LINEAGE = [
   { id: 'MART.TEMPERING_RESPONSE', layer: 'Data product', type: 'Dynamic table', from: ['CURATED.AXLE_TESTS'], what: 'Ductility per °C of tempering (REGR_SLOPE)' },
   { id: 'MART.DATA_QUALITY', layer: 'Data product', type: 'Dynamic table', from: ['CURATED.AXLE_TESTS'], what: 'Rule checks on every record' },
   { id: 'MART.SEM_BY_ROUTE', layer: 'Data product', type: 'Dynamic table', from: ['CURATED.SEM_FRACTOGRAPHY'], what: 'SEM ductile area by route' },
+  { id: 'MART.ANOMALIES', layer: 'Data product', type: 'Dynamic table', from: ['MART.ROUTE_QUALITY', 'MART.SEM_BY_ROUTE', 'CURATED.NCR_ENRICHED'], what: 'Release blocks, SEM/lab mismatches, open NCRs' },
+  { id: 'APP.V_GROUPS', layer: 'App', type: 'View', from: ['MART.ROUTE_QUALITY'], what: 'Read model for /groups and /lots' },
   { id: 'SEARCH.DOC_CHUNKS', layer: 'AI', type: 'Table', from: ['RAW.DOCUMENTS_RAW', 'CURATED.NCR_ENRICHED'], what: 'SPLIT_TEXT_RECURSIVE_CHARACTER chunks, injection filter' },
   { id: 'SEARCH.MATERIALS_SEARCH', layer: 'AI', type: 'Cortex Search service', from: ['SEARCH.DOC_CHUNKS'], what: 'Hybrid vector and keyword retrieval' },
   { id: 'ML.DUCTILITY_CLASSIFIER', layer: 'AI', type: 'Snowflake ML classification', from: ['CURATED.AXLE_TESTS'], what: 'Ductility band from process and chemistry' },
