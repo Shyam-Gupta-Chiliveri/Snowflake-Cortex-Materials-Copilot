@@ -54,7 +54,7 @@ When Snowflake is disconnected the API serves `data/mirror/products.json` and **
 - Release criteria in WI-HT-4CR13 §5 (30 % ductility, 600 HV10, &lt;5 % low-ductility share) are **demo limits**, not a standard.
 - NCR texts are **illustrative**, written so Cortex and 8D have something to read.
 - SEM U-Net scores come from the DSML project; this repo does not retrain the network.
-- Cortex is **mocked** until the Snowsight setup and `npm run snowflake:build` have run.
+- Warehouse data is live after `npm run snowflake:build`. Snowflake **trial** blocks `AI_COMPLETE`, legacy `CORTEX.COMPLETE`, Cortex Search embeddings (`EMBED_TEXT_768`), and Cortex classify/summarize. The API serves live MART products and falls back to the deterministic composer plus SQL search over `SEARCH.DOC_CHUNKS`. Snowflake ML classification **does** run (hold-out accuracy is stored in `ML.HOLDOUT_METRICS`).
 - ServiceNow is a **stub** unless `SERVICENOW_*` is set.
 - The 67 MB axle CSV is **not in git**. Load it from the local DSML path after you run the ACCOUNTADMIN SQL.
 - Knowledge docs are original procedure summaries that name ISO 6507-1 / Vickers HV10; they do not copy standard text.

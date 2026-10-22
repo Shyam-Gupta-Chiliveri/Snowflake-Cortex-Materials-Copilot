@@ -70,6 +70,11 @@ export async function createSnowflake(cfg) {
     return JSON.parse(rows[0].R).results || []
   }
 
+  const mapHits = (results) => results.map((r) => ({
+    ref: r.CHUNK_ID, title: r.TITLE, kind: r.SOURCE_TYPE, text: r.CHUNK,
+    score: r['@scores']?.cosine_similarity ?? null,
+  }))
+
   const api = {
     mode: 'snowflake',
     q,
@@ -101,20 +106,41 @@ export async function createSnowflake(cfg) {
     }),
     documents: async () => [],
     search: async (query, k = 5) => {
-      let results
-      try { results = await searchRest(query, k); searchVia = 'Cortex Search REST API' } catch (e) {
-        results = await searchSql(query, k); searchVia = 'Cortex Search (SEARCH_PREVIEW)'
+      try {
+        const results = await searchRest(query, k)
+        searchVia = 'Cortex Search REST API'
+        return mapHits(results)
+      } catch {
+        try {
+          const results = await searchSql(query, k)
+          searchVia = 'Cortex Search (SEARCH_PREVIEW)'
+          return mapHits(results)
+        } catch {
+          const toks = String(query).toLowerCase().split(/[^a-z0-9.]+/).filter((t) => t.length > 2).slice(0, 6)
+          const like = toks.map(() => '(LOWER(CHUNK) LIKE ? OR LOWER(TITLE) LIKE ?)').join(' OR ') || '1=1'
+          const binds = toks.flatMap((t) => [`%${t}%`, `%${t}%`])
+          const rows = await q(`SELECT CHUNK_ID, TITLE, SOURCE_TYPE, CHUNK FROM SEARCH.DOC_CHUNKS WHERE ${like} LIMIT ?`, [...binds, k])
+          searchVia = 'SQL ILIKE on SEARCH.DOC_CHUNKS (Cortex Search unavailable on trial)'
+          return rows.map((r) => ({ ref: r.CHUNK_ID, title: r.TITLE, kind: r.SOURCE_TYPE, text: r.CHUNK, score: null }))
+        }
       }
-      return results.map((r) => ({ ref: r.CHUNK_ID, title: r.TITLE, kind: r.SOURCE_TYPE, text: r.CHUNK,
-        score: r['@scores']?.cosine_similarity ?? null }))
     },
     complete: async (prompt) => {
       let lastErr
+      const calls = [
+        (model) => q('SELECT AI_COMPLETE(?, ?) AS R', [model, prompt]),
+        (model) => q('SELECT SNOWFLAKE.CORTEX.AI_COMPLETE(?, ?) AS R', [model, prompt]),
+        (model) => q('SELECT SNOWFLAKE.CORTEX.COMPLETE(?, ?) AS R', [model, prompt]),
+      ]
       for (const model of sf.models) {
-        try {
-          const rows = await q('SELECT SNOWFLAKE.CORTEX.COMPLETE(?, ?) AS R', [model, prompt])
-          return { text: String(rows[0].R || '').trim(), model, provider: 'Snowflake Cortex' }
-        } catch (e) { lastErr = e }
+        for (const call of calls) {
+          try {
+            const rows = await call(model)
+            const raw = rows[0]?.R
+            const text = typeof raw === 'string' ? raw : raw?.choices?.[0]?.messages?.[0]?.content || raw?.text || JSON.stringify(raw)
+            if (String(text || '').trim()) return { text: String(text).trim(), model, provider: 'Snowflake Cortex' }
+          } catch (e) { lastErr = e }
+        }
       }
       throw lastErr
     },

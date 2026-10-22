@@ -19,7 +19,8 @@
     "mirror:snowflake": "node scripts/mirror-from-snowflake.mjs",
     "snowflake:keys": "node scripts/snowflake-keys.mjs",
     "snowflake:build": "node scripts/snowflake-build.mjs",
-    "snowflake:verify": "node scripts/snowflake-verify.mjs"
+    "snowflake:verify": "node scripts/snowflake-verify.mjs",
+    "snowflake:finish": "node scripts/snowflake-finish.mjs"
   },
   "license": "MIT",
   "dependencies": {

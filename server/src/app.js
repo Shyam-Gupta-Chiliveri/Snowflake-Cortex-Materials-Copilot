@@ -29,7 +29,7 @@ export async function createApp(cfg = loadConfig()) {
       service: 'snowflake-cortex-materials-copilot',
       mode: info.mode,
       label: info.label,
-      cortex: info.mode === 'snowflake' && info.llm ? info.llm : 'mocked',
+      cortex: info.mode === 'snowflake' ? 'live warehouse · LLM trial-blocked (composer)' : 'mocked',
       search: info.search,
       ml: info.ml,
       reason,
