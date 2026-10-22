@@ -1,0 +1,11 @@
+services:
+  copilot:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      DATA_MODE: local
+    env_file:
+      - path: .env
+        required: false

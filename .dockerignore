@@ -1,0 +1,11 @@
+node_modules
+web/node_modules
+web/dist
+.git
+keys
+*.pem
+.env
+*.md
+!knowledge/*.md
+axle_test*.csv
+all_predictions.csv

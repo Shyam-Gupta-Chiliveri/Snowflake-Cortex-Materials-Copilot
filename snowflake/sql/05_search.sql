@@ -1,0 +1,25 @@
+-- Retrieval: chunk procedures and NCRs, then index them with Cortex Search (hybrid
+-- vector + keyword search, embeddings managed by Snowflake).
+USE ROLE MATERIALS_ENGINEER;
+USE WAREHOUSE MATERIALS_WH;
+USE DATABASE MATERIALS_AI;
+
+CREATE OR REPLACE TABLE SEARCH.DOC_CHUNKS AS
+SELECT CHUNK_ID, DOC_ID, TITLE, SOURCE_TYPE, CHUNK FROM (
+  SELECT d.DOC_ID || '#' || (c.INDEX + 1) AS CHUNK_ID, d.DOC_ID, d.TITLE, d.CATEGORY AS SOURCE_TYPE, c.VALUE::STRING AS CHUNK
+  FROM RAW.DOCUMENTS_RAW d,
+       LATERAL FLATTEN(INPUT => SNOWFLAKE.CORTEX.SPLIT_TEXT_RECURSIVE_CHARACTER(d.BODY, 'markdown', 900, 120)) c
+  UNION ALL
+  SELECT NCR_ID, NCR_ID, NCR_ID || ' (' || CATEGORY || ', ' || STATUS || ')', 'Nonconformance',
+         'Route ' || ROUTE_KEY || ', ' || PART || ', opened ' || TO_VARCHAR(OPENED_ON) || '. ' || DESCRIPTION
+  FROM CURATED.NCR_ENRICHED
+)
+WHERE NOT REGEXP_LIKE(CHUNK, '.*(ignore (all|any|previous)|system prompt|api[ _-]?key|disregard).*', 'is');
+
+CREATE OR REPLACE CORTEX SEARCH SERVICE SEARCH.MATERIALS_SEARCH
+  ON CHUNK
+  ATTRIBUTES SOURCE_TYPE, DOC_ID
+  WAREHOUSE = MATERIALS_WH
+  TARGET_LAG = '1 day'
+  COMMENT = 'Procedures, guides and NCRs for the materials copilot'
+AS SELECT CHUNK, CHUNK_ID, DOC_ID, TITLE, SOURCE_TYPE FROM SEARCH.DOC_CHUNKS;

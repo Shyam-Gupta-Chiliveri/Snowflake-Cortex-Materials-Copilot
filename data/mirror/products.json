@@ -1,0 +1,457 @@
+{
+ "meta": {
+  "source": "local mirror built from the raw CSV files with the pipeline rules",
+  "builtAt": "2026-10-22T16:54:03.776Z"
+ },
+ "routes": [
+  {
+   "routeKey": "V3-B-FREUND",
+   "groupKey": "V3-B-FREUND",
+   "version": 3,
+   "groupCode": "B",
+   "press": "FREUND",
+   "routeLabel": "Series temper (temperature not recorded)",
+   "seriesC": null,
+   "seriesH": null,
+   "addC": null,
+   "addH": null,
+   "vacuum": false,
+   "tests": 38341,
+   "hv10Mean": 604.85,
+   "hv10Std": 14.38,
+   "bendMean": 5799.37,
+   "bendStd": 199.8,
+   "ductMean": 34.19,
+   "ductStd": 2.33,
+   "lowDuctSharePct": 0,
+   "x46SharePct": 6.58,
+   "dieCastSharePct": 15.44,
+   "d78SharePct": 21.52,
+   "threeSampleSharePct": 17.83
+  },
+  {
+   "routeKey": "V6-A",
+   "groupKey": "V6-A",
+   "version": 6,
+   "groupCode": "A",
+   "press": null,
+   "routeLabel": "Untempered (as quenched)",
+   "seriesC": null,
+   "seriesH": null,
+   "addC": null,
+   "addH": null,
+   "vacuum": false,
+   "tests": 38396,
+   "hv10Mean": 679.33,
+   "hv10Std": 14.94,
+   "bendMean": 3298.13,
+   "bendStd": 201.21,
+   "ductMean": 19.21,
+   "ductStd": 2.27,
+   "lowDuctSharePct": 94.8,
+   "x46SharePct": 6.9,
+   "dieCastSharePct": 15.44,
+   "d78SharePct": 21.07,
+   "threeSampleSharePct": 18.19
+  },
+  {
+   "routeKey": "V6-B-FRIULPRESS",
+   "groupKey": "V6-B-FRIULPRESS",
+   "version": 6,
+   "groupCode": "B",
+   "press": "FRIULPRESS",
+   "routeLabel": "Untempered (as quenched)",
+   "seriesC": null,
+   "seriesH": null,
+   "addC": null,
+   "addH": null,
+   "vacuum": false,
+   "tests": 38543,
+   "hv10Mean": 679.56,
+   "hv10Std": 14.96,
+   "bendMean": 3300.77,
+   "bendStd": 199.79,
+   "ductMean": 19.24,
+   "ductStd": 2.26,
+   "lowDuctSharePct": 94.83,
+   "x46SharePct": 6.39,
+   "dieCastSharePct": 15.34,
+   "d78SharePct": 21.3,
+   "threeSampleSharePct": 18.07
+  },
+  {
+   "routeKey": "V6-C",
+   "groupKey": "V6-C",
+   "version": 6,
+   "groupCode": "C",
+   "press": null,
+   "routeLabel": "Temper 180 °C / 1 h",
+   "seriesC": null,
+   "seriesH": null,
+   "addC": 180,
+   "addH": 1,
+   "vacuum": false,
+   "tests": 38352,
+   "hv10Mean": 649.52,
+   "hv10Std": 14.95,
+   "bendMean": 4200.36,
+   "bendStd": 199.83,
+   "ductMean": 24.62,
+   "ductStd": 2.33,
+   "lowDuctSharePct": 24.39,
+   "x46SharePct": 6.35,
+   "dieCastSharePct": 15.3,
+   "d78SharePct": 21,
+   "threeSampleSharePct": 17.74
+  },
+  {
+   "routeKey": "V6-D",
+   "groupKey": "V6-D",
+   "version": 6,
+   "groupCode": "D",
+   "press": null,
+   "routeLabel": "Temper 200 °C / 1 h",
+   "seriesC": null,
+   "seriesH": null,
+   "addC": 200,
+   "addH": 1,
+   "vacuum": false,
+   "tests": 38949,
+   "hv10Mean": 639.49,
+   "hv10Std": 15.03,
+   "bendMean": 4349.29,
+   "bendStd": 198.77,
+   "ductMean": 25.49,
+   "ductStd": 2.33,
+   "lowDuctSharePct": 14.32,
+   "x46SharePct": 6.65,
+   "dieCastSharePct": 15.36,
+   "d78SharePct": 21.47,
+   "threeSampleSharePct": 17.86
+  },
+  {
+   "routeKey": "V6-E",
+   "groupKey": "V6-E",
+   "version": 6,
+   "groupCode": "E",
+   "press": null,
+   "routeLabel": "Temper 220 °C / 1 h",
+   "seriesC": null,
+   "seriesH": null,
+   "addC": 220,
+   "addH": 1,
+   "vacuum": false,
+   "tests": 38634,
+   "hv10Mean": 629.44,
+   "hv10Std": 15.07,
+   "bendMean": 4699.96,
+   "bendStd": 199.04,
+   "ductMean": 27.61,
+   "ductStd": 2.33,
+   "lowDuctSharePct": 2.52,
+   "x46SharePct": 6.77,
+   "dieCastSharePct": 15.4,
+   "d78SharePct": 21.13,
+   "threeSampleSharePct": 17.99
+  },
+  {
+   "routeKey": "V6-F",
+   "groupKey": "V6-F",
+   "version": 6,
+   "groupCode": "F",
+   "press": null,
+   "routeLabel": "Temper 240 °C / 1 h",
+   "seriesC": null,
+   "seriesH": null,
+   "addC": 240,
+   "addH": 1,
+   "vacuum": false,
+   "tests": 38621,
+   "hv10Mean": 619.52,
+   "hv10Std": 15.01,
+   "bendMean": 5100.55,
+   "bendStd": 199.02,
+   "ductMean": 30.01,
+   "ductStd": 2.32,
+   "lowDuctSharePct": 0.15,
+   "x46SharePct": 6.81,
+   "dieCastSharePct": 15.44,
+   "d78SharePct": 21.16,
+   "threeSampleSharePct": 18.2
+  },
+  {
+   "routeKey": "V11-H",
+   "groupKey": "V11-H",
+   "version": 11,
+   "groupCode": "H",
+   "press": null,
+   "routeLabel": "Series temper 200 °C / 3 h",
+   "seriesC": 200,
+   "seriesH": 3,
+   "addC": null,
+   "addH": null,
+   "vacuum": false,
+   "tests": 38615,
+   "hv10Mean": 639.39,
+   "hv10Std": 15.13,
+   "bendMean": 4350.18,
+   "bendStd": 198.95,
+   "ductMean": 25.51,
+   "ductStd": 2.34,
+   "lowDuctSharePct": 14.14,
+   "x46SharePct": 6.75,
+   "dieCastSharePct": 15.69,
+   "d78SharePct": 20.96,
+   "threeSampleSharePct": 17.74
+  },
+  {
+   "routeKey": "V11-I",
+   "groupKey": "V11-I",
+   "version": 11,
+   "groupCode": "I",
+   "press": null,
+   "routeLabel": "Series temper 200 °C / 3 h + 220 °C / 1 h",
+   "seriesC": 200,
+   "seriesH": 3,
+   "addC": 220,
+   "addH": 1,
+   "vacuum": false,
+   "tests": 38315,
+   "hv10Mean": 629.59,
+   "hv10Std": 14.99,
+   "bendMean": 4697.66,
+   "bendStd": 199.49,
+   "ductMean": 27.59,
+   "ductStd": 2.33,
+   "lowDuctSharePct": 2.39,
+   "x46SharePct": 7.02,
+   "dieCastSharePct": 15.21,
+   "d78SharePct": 21.09,
+   "threeSampleSharePct": 18.37
+  },
+  {
+   "routeKey": "V14",
+   "groupKey": "V14",
+   "version": 14,
+   "groupCode": null,
+   "press": null,
+   "routeLabel": "Vacuum hardening, 230 °C",
+   "seriesC": 230,
+   "seriesH": null,
+   "addC": null,
+   "addH": null,
+   "vacuum": true,
+   "tests": 18961,
+   "hv10Mean": 614.53,
+   "hv10Std": 14.82,
+   "bendMean": 6651.57,
+   "bendStd": 198.21,
+   "ductMean": 39.3,
+   "ductStd": 2.33,
+   "lowDuctSharePct": 0,
+   "x46SharePct": 6.85,
+   "dieCastSharePct": 15.24,
+   "d78SharePct": 21.38,
+   "threeSampleSharePct": 17.7
+  },
+  {
+   "routeKey": "V14-RT",
+   "groupKey": "V14",
+   "version": 14,
+   "groupCode": null,
+   "press": null,
+   "routeLabel": "Vacuum hardening, 230 °C + 230 °C / 1 h",
+   "seriesC": 230,
+   "seriesH": null,
+   "addC": 230,
+   "addH": 1,
+   "vacuum": true,
+   "tests": 19273,
+   "hv10Mean": 609.76,
+   "hv10Std": 14.59,
+   "bendMean": 6647.07,
+   "bendStd": 199.87,
+   "ductMean": 39.28,
+   "ductStd": 2.32,
+   "lowDuctSharePct": 0,
+   "x46SharePct": 6.89,
+   "dieCastSharePct": 15.4,
+   "d78SharePct": 21.43,
+   "threeSampleSharePct": 17.76
+  }
+ ],
+ "factors": [
+  {
+   "factor": "material",
+   "level": "4Cr13",
+   "tests": 359178,
+   "hv10Mean": 638.31,
+   "bendMean": 4641.85,
+   "ductMean": 27.26
+  },
+  {
+   "factor": "diameter",
+   "level": "8 mm",
+   "tests": 303334,
+   "hv10Mean": 638.31,
+   "bendMean": 4641.91,
+   "ductMean": 27.26
+  },
+  {
+   "factor": "dieCast",
+   "level": "No",
+   "tests": 325735,
+   "hv10Mean": 638.3,
+   "bendMean": 4642.72,
+   "ductMean": 27.27
+  },
+  {
+   "factor": "samples",
+   "level": "5",
+   "tests": 315810,
+   "hv10Mean": 638.29,
+   "bendMean": 4643.58,
+   "ductMean": 27.27
+  },
+  {
+   "factor": "diameter",
+   "level": "7.8 mm",
+   "tests": 81666,
+   "hv10Mean": 638.26,
+   "bendMean": 4646.02,
+   "ductMean": 27.29
+  },
+  {
+   "factor": "samples",
+   "level": "3",
+   "tests": 69190,
+   "hv10Mean": 638.34,
+   "bendMean": 4639.14,
+   "ductMean": 27.24
+  },
+  {
+   "factor": "dieCast",
+   "level": "Yes",
+   "tests": 59265,
+   "hv10Mean": 638.29,
+   "bendMean": 4643.14,
+   "ductMean": 27.26
+  },
+  {
+   "factor": "material",
+   "level": "X46CrS13",
+   "tests": 25822,
+   "hv10Mean": 638.24,
+   "bendMean": 4655.83,
+   "ductMean": 27.34
+  }
+ ],
+ "correlations": [
+  {
+   "feature": "C_PCT",
+   "rWithDuctility": 0.0031
+  },
+  {
+   "feature": "SI_PCT",
+   "rWithDuctility": 0.0002
+  },
+  {
+   "feature": "MN_PCT",
+   "rWithDuctility": 0.0005
+  },
+  {
+   "feature": "P_PCT",
+   "rWithDuctility": -0.0021
+  },
+  {
+   "feature": "S_PCT",
+   "rWithDuctility": 0.003
+  },
+  {
+   "feature": "CR_PCT",
+   "rWithDuctility": 0.0002
+  },
+  {
+   "feature": "NI_PCT",
+   "rWithDuctility": -0.0017
+  },
+  {
+   "feature": "HV10_MEAN",
+   "rWithDuctility": -0.7265
+  },
+  {
+   "feature": "BEND_AVG_N",
+   "rWithDuctility": 0.9485
+  }
+ ],
+ "tempering": {
+  "scope": "Version 6, additional temper 180 to 240 °C for 1 h",
+  "tests": 154556,
+  "slopePctPerC": 0.0916,
+  "interceptPct": 7.7,
+  "r": 0.6543
+ },
+ "dataQuality": {
+  "tests": 385000,
+  "hvOrderViolations": 0,
+  "sumNot100": 0
+ },
+ "sem": {
+  "images": 1999,
+  "mapping": [
+   {
+    "mapping": "file name",
+    "images": 573
+   },
+   {
+    "mapping": "inferred from group and temperature",
+    "images": 1087
+   },
+   {
+    "mapping": "version 11 without group",
+    "images": 148
+   },
+   {
+    "mapping": "other campaign (QUW23)",
+    "images": 191
+   }
+  ],
+  "byRoute": [
+   {
+    "routeKey": "V6-A",
+    "images": 123,
+    "semDuctileMean": 45.26,
+    "semDuctileStd": 29.36,
+    "cleavageDominatedPct": 61.79
+   },
+   {
+    "routeKey": "V6-B-FRIULPRESS",
+    "images": 108,
+    "semDuctileMean": 41.17,
+    "semDuctileStd": 29.05,
+    "cleavageDominatedPct": 70.37
+   },
+   {
+    "routeKey": "V6-F",
+    "images": 1187,
+    "semDuctileMean": 59.65,
+    "semDuctileStd": 31.68,
+    "cleavageDominatedPct": 43.22
+   },
+   {
+    "routeKey": "V14",
+    "images": 113,
+    "semDuctileMean": 52.35,
+    "semDuctileStd": 32.14,
+    "cleavageDominatedPct": 54.87
+   },
+   {
+    "routeKey": "V14-RT",
+    "images": 129,
+    "semDuctileMean": 48.98,
+    "semDuctileStd": 31.43,
+    "cleavageDominatedPct": 58.14
+   }
+  ]
+ }
+}

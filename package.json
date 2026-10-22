@@ -1,0 +1,29 @@
+{
+  "name": "snowflake-cortex-materials-copilot",
+  "version": "1.0.0",
+  "description": "Materials quality copilot on Snowflake Cortex: data pipeline, Cortex Search, Cortex LLM functions, Snowflake ML, Node.js API and React UI",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/src/index.js",
+    "dev": "node --watch server/src/index.js",
+    "web": "npm --prefix web run dev",
+    "web:dev": "npm --prefix web run dev",
+    "web:build": "npm --prefix web run build",
+    "test": "DATA_MODE=local node --test --test-concurrency=1 server/test/*.test.js",
+    "build-mirror": "node scripts/build-mirror.mjs",
+    "mirror": "node scripts/build-mirror.mjs",
+    "mirror:snowflake": "node scripts/mirror-from-snowflake.mjs",
+    "snowflake:keys": "node scripts/snowflake-keys.mjs",
+    "snowflake:build": "node scripts/snowflake-build.mjs",
+    "snowflake:verify": "node scripts/snowflake-verify.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.3.0",
+    "snowflake-sdk": "^3.4.0"
+  }
+}
