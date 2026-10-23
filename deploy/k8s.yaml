@@ -1,0 +1,89 @@
+# Live demo on a single-node k3s cluster (Oracle Cloud Always Free, Frankfurt).
+# Image is built on the node and imported into containerd, so no registry is needed.
+# Snowflake RSA material lives in the "cortex-snowflake" secret, not in the image.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cortex-copilot
+  namespace: materials
+  labels: { app: cortex-copilot }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: cortex-copilot }
+  template:
+    metadata:
+      labels: { app: cortex-copilot }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: app
+          image: docker.io/library/cortex-copilot:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+            - name: DATA_MODE
+              value: auto
+            - name: SNOWFLAKE_ACCOUNT
+              valueFrom:
+                secretKeyRef: { name: cortex-snowflake, key: SNOWFLAKE_ACCOUNT }
+            - name: SNOWFLAKE_USER
+              valueFrom:
+                secretKeyRef: { name: cortex-snowflake, key: SNOWFLAKE_USER }
+            - name: SNOWFLAKE_ROLE
+              valueFrom:
+                secretKeyRef: { name: cortex-snowflake, key: SNOWFLAKE_ROLE }
+            - name: SNOWFLAKE_WAREHOUSE
+              valueFrom:
+                secretKeyRef: { name: cortex-snowflake, key: SNOWFLAKE_WAREHOUSE }
+            - name: SNOWFLAKE_DATABASE
+              valueFrom:
+                secretKeyRef: { name: cortex-snowflake, key: SNOWFLAKE_DATABASE }
+            - name: SNOWFLAKE_PRIVATE_KEY_PATH
+              value: /var/secrets/snowflake/key.pem
+          volumeMounts:
+            - name: snowflake-key
+              mountPath: /var/secrets/snowflake
+              readOnly: true
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits: { cpu: "1", memory: 768Mi }
+          readinessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 8
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 25
+            periodSeconds: 30
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities: { drop: [ALL] }
+      volumes:
+        - name: snowflake-key
+          secret:
+            secretName: cortex-snowflake
+            items:
+              - key: key.pem
+                path: key.pem
+            defaultMode: 0400
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cortex-copilot
+  namespace: materials
+spec:
+  type: NodePort
+  selector: { app: cortex-copilot }
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30085

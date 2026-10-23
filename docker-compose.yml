@@ -1,3 +1,6 @@
+# Local only. The public site is the same image on k3s (deploy/k8s.yaml).
+# Bind 0.0.0.0 inside the container; map 8080 on the host.
+# Keys stay in .env / keys/ (gitignored) and are never baked into the image.
 services:
   copilot:
     build: .

@@ -1,8 +1,10 @@
 # Snowflake Cortex materials quality copilot
 
+**Live demo:** https://cortex.138.2.179.154.sslip.io
+
 English questions over **4Cr13 / X46CrS13 axle heat treatment**: 385,000 HV10 and three-point bending tests, SEM ductile/brittle maps, and 8D nonconformances. Answers are grounded on Snowflake data products (or a local mirror) and gated by work instruction WI-HT-4CR13.
 
-Same plant story as the SAP quality copilot — not a generic pharma demo.
+Same plant story as the SAP quality copilot — not a generic pharma demo. The public site is one Docker image (React build + Express API) on the existing Always Free k3s node.
 
 ## Problem
 
@@ -46,7 +48,7 @@ When Snowflake is disconnected the API serves `data/mirror/products.json` and **
 | Snowflake ML classification | **Target** | Trained in-warehouse; skipped gracefully if the trial cannot run it |
 | Snowflake ML forecast / anomaly detection | **Target** | Source CSVs have no time index; rule-based `MART.ANOMALIES` is the live product |
 | ServiceNow | **Artifact** | Stub incident payload unless `SERVICENOW_*` is set |
-| VM deploy | **Target** | Docker Compose is local-only; VM needs explicit approval |
+| Public Docker site | **Live** | [cortex.138.2.179.154.sslip.io](https://cortex.138.2.179.154.sslip.io) — one image, k3s `cortex-copilot`, Snowflake secret at runtime |
 | Related Streamlit apps | **Live** | Not merged: [Agentic](https://138.2.179.154.sslip.io), [SEM](https://sem.138.2.179.154.sslip.io), [RAG](https://rag.138.2.179.154.sslip.io), [SAP](https://quality.138.2.179.154.sslip.io) |
 
 ## Honest limits
@@ -69,12 +71,14 @@ npm test           # node:test, no live Snowflake
 
 `GET /health` should report `"mode": "mirror"` and `"cortex": "mocked"`.
 
-Docker:
+Docker (same image as production; Compose is local-only):
 
 ```bash
 docker compose up --build
 # http://127.0.0.1:8080
 ```
+
+The public site is that image on k3s (`deploy/k8s.yaml`, NodePort 30085, Caddy at `cortex.138.2.179.154.sslip.io`). Snowflake keys are a cluster secret, not in the image. `GET /health` on the live host should report `"mode": "snowflake"` and `"cortex": "live warehouse · LLM trial-blocked (composer)"`.
 
 Rebuild the local mirror after you have the raw CSVs:
 

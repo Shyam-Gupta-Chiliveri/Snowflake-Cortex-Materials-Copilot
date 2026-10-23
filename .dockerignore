@@ -2,6 +2,7 @@ node_modules
 web/node_modules
 web/dist
 .git
+.github
 keys
 *.pem
 .env
@@ -9,3 +10,8 @@ keys
 !knowledge/*.md
 axle_test*.csv
 all_predictions.csv
+data/raw
+server/test
+scripts
+deploy
+*.log
