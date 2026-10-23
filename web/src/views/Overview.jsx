@@ -142,7 +142,7 @@ export default function Overview() {
           <div className="cap"><div className="t">SAP workbench <span className="chip live">Live</span></div><p><a href="https://quality.138.2.179.154.sslip.io" target="_blank" rel="noreferrer">quality.138.2.179.154.sslip.io</a> — CAP + Gen AI Hub quality copilot.</p></div>
         </div>
       </div>
-      <p className="footer">Demo release limits in WI-HT-4CR13 §5 are project criteria, not a standard. NCR texts are illustrative. The 67 MB axle CSV is not in git. VM deploy of this copilot is Target and needs approval.</p>
+      <p className="footer">Demo release limits in WI-HT-4CR13 §5 are project criteria, not a standard. NCR texts are illustrative. The 67 MB axle CSV is not in git. This site is the Docker image on k3s. Trial Snowflake blocks AI_COMPLETE; MART and the composer are live.</p>
     </>
   )
 }
